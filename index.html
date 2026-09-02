@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<title>a birthday wish</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400,500&family=Caveat:wght@500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+
+  :root{
+    --bg:#FFFFFF;
+    --ink:#1B1917;
+    --muted:#928C84;
+    --line:#EBE6DE;
+    --terracotta:#E2794F;
+    --sage:#6E9E80;
+    --gold:#EFB223;
+    --lavender:#A98FC7;
+
+    --screen-x:clamp(1.2rem,4vw,4rem);
+    --screen-top:clamp(3.5rem,8vw,6rem);
+    --screen-bottom:clamp(3.5rem,7vw,5rem);
+  }
+
+  *{
+    box-sizing:border-box;
+  }
+
+  html,
+  body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+  }
+
+  html{
+    background:var(--bg);
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    min-height:100dvh;
+    overflow-x:hidden;
+  }
+
+  button,
+  input{
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  button{
+    font:inherit;
+  }
+
+  .credit{
+    position:fixed;
+    left:clamp(1rem,3vw,1.4rem);
+    bottom:max(1rem,env(safe-area-inset-bottom));
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    z-index:5;
+    pointer-events:none;
+  }
+
+  .screen{
+    display:none;
+    min-height:100vh;
+    min-height:100dvh;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:
+      var(--screen-top)
+      var(--screen-x)
+      var(--screen-bottom);
+    position:relative;
+    text-align:center;
+    overflow:hidden;
+  }
+
+  .screen.active{
+    display:flex;
+  }
+
+  .corner-deco{
+    position:absolute;
+    top:clamp(-30px,-4vw,-14px);
+    right:clamp(-22px,-3vw,-10px);
+    width:clamp(100px,14vw,150px);
+    opacity:.9;
+    pointer-events:none;
+  }
+
+  .corner-deco svg{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  .wordmark{
+    font-size:clamp(10px,1.2vw,12px);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 clamp(1.1rem,3vw,1.6rem);
+  }
+
+  .headline{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(1.9rem,5.5vw,3.1rem);
+    line-height:1.22;
+    width:min(640px,100%);
+    margin:0 0 clamp(2rem,5vw,2.6rem);
+  }
+
+  .cta-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.1rem;
+    align-items:center;
+  }
+
+  .link-btn{
+    display:inline-block;
+    background:none;
+    border:none;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:clamp(11px,1.4vw,13px);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+    cursor:pointer;
+    padding:.4rem 0 .3rem;
+    border-bottom:1px solid var(--ink);
+    transition:
+      opacity .15s ease,
+      transform .15s ease;
+  }
+
+  .link-btn:hover{
+    opacity:.55;
+  }
+
+  .link-btn:active{
+    opacity:.35;
+    transform:translateY(1px);
+  }
+
+  .link-btn.quiet{
+    color:var(--muted);
+    border-bottom-color:var(--line);
+  }
+
+  .setup-form{
+    width:100%;
+    max-width:340px;
+  }
+
+  .field{
+    text-align:left;
+    margin-bottom:1.6rem;
+  }
+
+  .field label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:.5rem;
+  }
+
+  .field input{
+    width:100%;
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    padding:.3rem .1rem .6rem;
+    border:none;
+    border-bottom:1px solid var(--line);
+    background:transparent;
+    color:var(--ink);
+  }
+
+  .field input::placeholder{
+    color:#C9C2B8;
+  }
+
+  .field input:focus{
+    outline:none;
+    border-bottom-color:var(--ink);
+  }
+
+  .err{
+    font-size:12px;
+    color:var(--terracotta);
+    margin:-1rem 0 1.2rem;
+    text-align:left;
+    display:none;
+  }
+
+  .result{
+    display:none;
+    margin-top:2.4rem;
+    padding-top:1.6rem;
+    border-top:1px solid var(--line);
+    text-align:left;
+    max-width:340px;
+    width:100%;
+  }
+
+  .result p{
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 .6rem;
+  }
+
+  .linkRow{
+    display:flex;
+    gap:8px;
+  }
+
+  .linkRow input{
+    flex:1;
+    min-width:0;
+    font-size:13px;
+    font-family:'Inter',sans-serif;
+    padding:.5rem 0;
+    border:none;
+    border-bottom:1px solid var(--line);
+    background:transparent;
+    color:var(--muted);
+  }
+
+  .copyBtn{
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--ink);
+    padding:.5rem 0;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+
+  .copyBtn:hover{
+    opacity:.55;
+  }
+
+  .openNote{
+    font-size:11px !important;
+    text-transform:none !important;
+    letter-spacing:0 !important;
+    color:var(--muted);
+    margin-top:.9rem !important;
+  }
+
+  .back-link{
+    display:inline-block;
+    margin-top:2.4rem;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:none;
+    border:none;
+    cursor:pointer;
+  }
+
+  .back-link:hover{
+    color:var(--ink);
+  }
+
+  #receiverScreen{
+    overflow:hidden;
+    padding:
+      clamp(2rem,5vw,3rem)
+      var(--screen-x)
+      clamp(2.5rem,6vw,4rem);
+  }
+
+  .receiver-inner{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:760px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .envelope-wrap{
+    text-align:center;
+    width:100%;
+  }
+
+  .envelope{
+    position:relative;
+    width:clamp(170px,25vw,210px);
+    aspect-ratio:200 / 140;
+    margin:0 auto clamp(1.6rem,4vw,2rem);
+    cursor:pointer;
+    perspective:600px;
+  }
+
+  .envelope svg{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:block;
+  }
+
+  .env-body{
+    z-index:1;
+  }
+
+  .env-flap{
+    z-index:3;
+    transform-origin:50% 15%;
+    transition:
+      transform .55s cubic-bezier(.45,0,.2,1);
+  }
+
+  .envelope.opened .env-flap{
+    transform:rotateX(178deg);
+  }
+
+  .letter{
+    position:absolute;
+    left:50%;
+    bottom:30%;
+    width:66%;
+    height:56%;
+    z-index:2;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:5px;
+    box-shadow:
+      0 6px 14px rgba(27,25,23,.1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transform:
+      translate(-50%,6%)
+      scale(.88);
+    transition:
+      transform .6s cubic-bezier(.2,.85,.25,1) .18s,
+      opacity .35s ease .18s;
+  }
+
+  .envelope.opened .letter{
+    opacity:1;
+    transform:
+      translate(-50%,-82%)
+      scale(1.05)
+      rotate(-1.5deg);
+  }
+
+  .letter svg{
+    position:static;
+    width:clamp(18px,3vw,22px);
+    height:clamp(18px,3vw,22px);
+  }
+
+  .receiver-sub{
+    font-size:clamp(10px,1.5vw,12px);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 1.4rem;
+  }
+
+  .card-wrap{
+    display:none;
+    text-align:center;
+    width:min(620px,100%);
+    opacity:0;
+    transform:translateY(16px);
+    transition:
+      opacity .7s ease,
+      transform .7s ease;
+  }
+
+  .card-wrap.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .cursive{
+    margin:0;
+    color:#39322D;
+    font-family:"Times New Roman",Times,serif;
+    font-size:clamp(
+      1.55rem,
+      4.5vw,
+      2.55rem
+    );
+    font-weight:400;
+    line-height:1.35;
+    letter-spacing:.01em;
+    width:100%;
+    overflow-wrap:anywhere;
+  }
+
+  .cursive .from{
+    display:block;
+    margin-top:clamp(14px,3vw,22px);
+    color:var(--terracotta);
+    font-size:clamp(
+      1.1rem,
+      3vw,
+      1.55rem
+    );
+    font-family:"Times New Roman",Times,serif;
+  }
+
+  .cake{
+    width:min(
+      clamp(145px,32vw,190px),
+      70vw
+    );
+    margin:
+      clamp(1.5rem,4vw,2.2rem)
+      auto
+      .7rem;
+  }
+
+  .cake svg{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  .maker-btn{
+    margin-top:clamp(.4rem,1vw,.7rem);
+  }
+
+  /* ================================
+     CLEAN MAKER POPUP
+     ================================ */
+
+  .maker-modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:
+      1.2rem
+      max(1.2rem,env(safe-area-inset-right))
+      max(1.2rem,env(safe-area-inset-bottom))
+      max(1.2rem,env(safe-area-inset-left));
+    background:rgba(27,25,23,.25);
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:
+      opacity .25s ease,
+      visibility .25s ease;
+  }
+
+  .maker-modal-backdrop.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+  }
+
+  .maker-modal{
+    position:relative;
+    width:min(370px,100%);
+    max-height:
+      calc(100dvh - 2.4rem);
+    overflow:auto;
+    background:#FFFDF8;
+    border:1px solid rgba(235,230,222,.95);
+    border-radius:18px;
+    padding:
+      clamp(2.2rem,7vw,3rem)
+      clamp(1.5rem,6vw,2.4rem)
+      clamp(2rem,6vw,2.6rem);
+    box-shadow:
+      0 25px 70px rgba(27,25,23,.16);
+    transform:
+      translateY(14px)
+      scale(.97);
+    transition:
+      transform .3s cubic-bezier(.2,.8,.2,1);
+    text-align:center;
+  }
+
+  .maker-modal-backdrop.show .maker-modal{
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  .modal-close{
+    position:absolute;
+    top:12px;
+    right:14px;
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    background:none;
+    color:var(--muted);
+    font-size:24px;
+    line-height:1;
+    cursor:pointer;
+    transition:
+      color .15s ease,
+      transform .15s ease;
+  }
+
+  .modal-close:hover{
+    color:var(--ink);
+    transform:rotate(5deg);
+  }
+
+  .maker-message{
+    margin:0 auto 1.5rem;
+    max-width:290px;
+    font-family:"Times New Roman",Times,serif;
+    font-size:clamp(
+      1.2rem,
+      4vw,
+      1.4rem
+    );
+    line-height:1.5;
+    color:#514943;
+  }
+
+  .maker-name{
+    display:block;
+    margin-top:.25rem;
+    font-family:'Fraunces',serif;
+    font-size:clamp(
+      1.35rem,
+      4.5vw,
+      1.55rem
+    );
+    color:var(--terracotta);
+  }
+
+  .maker-role{
+    display:block;
+    margin-top:.15rem;
+    font-family:"Times New Roman",Times,serif;
+    font-size:1rem;
+    color:var(--muted);
+  }
+
+  .maker-instagram{
+    display:inline-block;
+    margin-top:.25rem;
+    text-decoration:none;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:clamp(11px,1.4vw,13px);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+    cursor:pointer;
+    padding:.4rem 0 .3rem;
+    border-bottom:1px solid var(--ink);
+    transition:
+      opacity .15s ease,
+      transform .15s ease;
+  }
+
+  .maker-instagram:hover{
+    opacity:.55;
+  }
+
+  .maker-instagram:active{
+    opacity:.35;
+    transform:translateY(1px);
+  }
+
+  .balloon{
+    position:absolute;
+    bottom:-160px;
+    width:clamp(38px,5vw,50px);
+    height:clamp(50px,6.5vw,64px);
+    border-radius:
+      50% 50% 50% 50% /
+      58% 58% 42% 42%;
+    opacity:.9;
+    z-index:1;
+    animation:rise linear forwards;
+  }
+
+  .balloon::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:100%;
+    width:1px;
+    height:50px;
+    background:rgba(27,25,23,.15);
+    transform:translateX(-50%);
+  }
+
+  @keyframes rise{
+
+    0%{
+      transform:
+        translateY(0)
+        translateX(0)
+        rotate(-3deg);
+      opacity:.9;
+    }
+
+    85%{
+      opacity:.9;
+    }
+
+    100%{
+      transform:
+        translateY(-115vh)
+        translateX(15px)
+        rotate(3deg);
+      opacity:0;
+    }
+  }
+
+  @media (max-width:430px){
+
+    .screen{
+      padding-left:1.15rem;
+      padding-right:1.15rem;
+    }
+
+    .headline{
+      font-size:clamp(1.75rem,8vw,2.25rem);
+    }
+
+    #receiverScreen{
+      padding-top:2rem;
+      padding-bottom:3.5rem;
+    }
+
+    .envelope{
+      width:min(190px,62vw);
+    }
+
+    .cursive{
+      font-size:clamp(
+        1.45rem,
+        7vw,
+        1.95rem
+      );
+      line-height:1.4;
+    }
+
+    .cursive .from{
+      font-size:clamp(
+        1.05rem,
+        5vw,
+        1.35rem
+      );
+      margin-top:14px;
+    }
+
+    .cake{
+      width:min(160px,48vw);
+      margin-top:1.45rem;
+    }
+
+    .maker-modal{
+      border-radius:16px;
+    }
+
+    .maker-message{
+      max-width:250px;
+    }
+
+  }
+
+  @media (min-width:600px) and (max-width:1024px){
+
+    .screen{
+      padding-left:clamp(2rem,7vw,4rem);
+      padding-right:clamp(2rem,7vw,4rem);
+    }
+
+    .envelope{
+      width:230px;
+    }
+
+    .card-wrap{
+      max-width:650px;
+    }
+
+    .cake{
+      width:200px;
+    }
+
+  }
+
+  @media (min-width:1200px){
+
+    .headline{
+      font-size:3.1rem;
+    }
+
+    .envelope{
+      width:230px;
+    }
+
+    .card-wrap{
+      max-width:680px;
+    }
+
+    .cake{
+      width:210px;
+    }
+
+  }
+
+  @media (prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+      scroll-behavior:auto !important;
+    }
+
+    .balloon{
+      display:none;
+    }
+
+    .maker-modal-backdrop,
+    .maker-modal,
+    .card-wrap,
+    .letter,
+    .env-flap{
+      transition:none !important;
+    }
+
+  }
+
+</style>
+</head>
+
+<body>
+
+<!-- ================================
+     HOME SCREEN
+     ================================ -->
+
+<div class="screen active" id="homeScreen">
+
+  <div class="corner-deco">
+
+    <svg viewBox="0 0 140 140" fill="none">
+
+      <circle
+        cx="70"
+        cy="45"
+        r="26"
+        fill="#F0B49A"
+      />
+
+      <circle
+        cx="46"
+        cy="66"
+        r="20"
+        fill="#F5CBB4"
+      />
+
+      <circle
+        cx="92"
+        cy="68"
+        r="20"
+        fill="#EAD9A8"
+      />
+
+      <circle
+        cx="70"
+        cy="88"
+        r="18"
+        fill="#C9DDC5"
+      />
+
+    </svg>
+
+  </div>
+
+  <p class="wordmark">
+    a wish, wrapped up
+  </p>
+
+  <h1 class="headline">
+    handwritten birthday wishes<br>
+    delivered digitally
+  </h1>
+
+  <div class="cta-list">
+
+    <button
+      type="button"
+      class="link-btn"
+      id="startBtn"
+    >
+      Create a wish
+    </button>
+
+    <button
+      type="button"
+      class="link-btn quiet"
+      id="howBtn"
+    >
+      How it works
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- ================================
+     HOW IT WORKS
+     ================================ -->
+
+<div class="screen" id="howScreen">
+
+  <p class="wordmark">
+    how it works
+  </p>
+
+  <h1 class="headline">
+    write it once,<br>
+    they open it themselves
+  </h1>
+
+  <p
+    style="
+      max-width:380px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      margin:0 0 2rem;
+    "
+  >
+    Add their name and yours. You'll get a page made just for them —
+    a sealed envelope that opens into a wish, a burst of colour,
+    and a small cake at the end.
+  </p>
+
+  <button
+    type="button"
+    class="link-btn"
+    id="howStartBtn"
+  >
+    Create a wish
+  </button>
+
+</div>
+
+
+<!-- ================================
+     SETUP SCREEN
+     ================================ -->
+
+<div class="screen" id="setupScreen">
+
+  <p class="wordmark">
+    create a wish
+  </p>
+
+  <h1 class="headline">
+    who's it for?
+  </h1>
+
+  <form
+    class="setup-form"
+    id="setupForm"
+  >
+
+    <div class="field">
+
+      <label for="toName">
+        Their name
+      </label>
+
+      <input
+        id="toName"
+        type="text"
+        placeholder="e.g. Priya"
+        maxlength="30"
+        autocomplete="off"
+      >
+
+    </div>
+
+    <div class="field">
+
+      <label for="fromName">
+        Your name
+      </label>
+
+      <input
+        id="fromName"
+        type="text"
+        placeholder="e.g. Arjun"
+        maxlength="30"
+        autocomplete="off"
+      >
+
+    </div>
+
+    <p
+      class="err"
+      id="errMsg"
+    >
+      Fill in both names first.
+    </p>
+
+    <button
+      type="button"
+      class="link-btn"
+      id="doneBtn"
+    >
+      Done
+    </button>
+
+    <div
+      class="result"
+      id="resultBox"
+    >
+
+      <p>
+        Their page is ready — send them this link
+      </p>
+
+      <div class="linkRow">
+
+        <input
+          id="linkOut"
+          type="text"
+          readonly
+        >
+
+        <button
+          type="button"
+          class="copyBtn"
+          id="copyBtn"
+        >
+          Copy
+        </button>
+
+      </div>
+
+      <p class="openNote">
+        It also opened in a new tab so you can preview it.
+      </p>
+
+    </div>
+
+  </form>
+
+  <button
+    type="button"
+    class="back-link"
+    id="backBtn"
+  >
+    back
+  </button>
+
+</div>
+
+
+<!-- ================================
+     RECEIVER SCREEN
+     ================================ -->
+
+<div
+  class="screen"
+  id="receiverScreen"
+>
+
+  <div class="receiver-inner">
+
+    <div
+      class="envelope-wrap"
+      id="envelopeWrap"
+    >
+
+      <div
+        class="envelope"
+        id="envelope"
+      >
+
+        <svg
+          class="env-body"
+          viewBox="0 0 200 140"
+        >
+
+          <rect
+            x="10"
+            y="20"
+            width="180"
+            height="110"
+            rx="8"
+            fill="#F7F1E7"
+          />
+
+          <path
+            d="M10 28 L100 90 L190 28"
+            stroke="#E4D9C4"
+            stroke-width="3"
+            fill="none"
+          />
+
+        </svg>
+
+
+        <div class="letter">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+
+            <path
+              d="
+                M12 21
+                s-7-4.6-9.5-9
+                C0.7 8.6 2 5 5.5 5
+                c2 0 3.4 1.2 4 2.4
+                C10.1 6.2 11.5 5 13.5 5
+                C17 5 18.3 8.6 21.5 12
+                c-2.5 4.4-9.5 9-9.5 9z
+              "
+              fill="#E2794F"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <svg
+          class="env-flap"
+          viewBox="0 0 200 140"
+        >
+
+          <path
+            d="
+              M10 26
+              C10 22 13 20 17 20
+              L183 20
+              C187 20 190 22 190 26
+              L100 82 Z
+            "
+            fill="#F0E5D2"
+            stroke="#E4D9C4"
+            stroke-width="2"
+          />
+
+          <circle
+            cx="100"
+            cy="78"
+            r="9"
+            fill="#E2794F"
+          />
+
+        </svg>
+
+      </div>
+
+
+      <p class="receiver-sub">
+        a wish is waiting
+      </p>
+
+
+      <button
+        type="button"
+        class="link-btn"
+        id="openBtn"
+      >
+        Open
+      </button>
+
+    </div>
+
+
+    <div
+      class="card-wrap"
+      id="cardWrap"
+    >
+
+      <p
+        class="cursive"
+        id="cursiveMsg"
+      ></p>
+
+
+      <!-- CAKE -->
+
+      <div class="cake">
+
+        <svg
+          viewBox="0 0 200 180"
+          fill="none"
+        >
+
+          <ellipse
+            cx="100"
+            cy="162"
+            rx="88"
+            ry="10"
+            fill="#00000006"
+          />
+
+          <rect
+            x="35"
+            y="110"
+            width="130"
+            height="45"
+            rx="8"
+            fill="#E2794F"
+          />
+
+          <rect
+            x="35"
+            y="110"
+            width="130"
+            height="10"
+            rx="5"
+            fill="#FFFDF8"
+            opacity=".9"
+          />
+
+          <rect
+            x="50"
+            y="80"
+            width="100"
+            height="35"
+            rx="8"
+            fill="#6E9E80"
+          />
+
+          <rect
+            x="50"
+            y="80"
+            width="100"
+            height="9"
+            rx="4"
+            fill="#FFFDF8"
+            opacity=".9"
+          />
+
+
+          <!-- LEFT CANDLE -->
+
+          <rect
+            x="65"
+            y="60"
+            width="4"
+            height="22"
+            rx="2"
+            fill="#EFB223"
+          />
+
+          <path
+            d="
+              M67 60
+              C63 54 63 48 67 44
+              C71 48 71 54 67 60 Z
+            "
+            fill="#EFB223"
+          />
+
+
+          <!-- CENTER CANDLE -->
+
+          <rect
+            x="98"
+            y="55"
+            width="4"
+            height="27"
+            rx="2"
+            fill="#EFB223"
+          />
+
+          <path
+            d="
+              M100 55
+              C96 49 96 43 100 39
+              C104 43 104 49 100 55 Z
+            "
+            fill="#E2794F"
+          />
+
+
+          <!-- RIGHT CANDLE -->
+
+          <rect
+            x="131"
+            y="60"
+            width="4"
+            height="22"
+            rx="2"
+            fill="#EFB223"
+          />
+
+          <path
+            d="
+              M133 60
+              C129 54 129 48 133 44
+              C137 48 137 54 133 60 Z
+            "
+            fill="#EFB223"
+          />
+
+
+          <!-- DECORATIONS -->
+
+          <circle
+            cx="75"
+            cy="98"
+            r="4"
+            fill="#FFFDF8"
+            opacity=".85"
+          />
+
+          <circle
+            cx="100"
+            cy="95"
+            r="4"
+            fill="#FFFDF8"
+            opacity=".85"
+          />
+
+          <circle
+            cx="125"
+            cy="98"
+            r="4"
+            fill="#FFFDF8"
+            opacity=".85"
+          />
+
+          <circle
+            cx="60"
+            cy="130"
+            r="4"
+            fill="#EFB223"
+            opacity=".9"
+          />
+
+          <circle
+            cx="90"
+            cy="130"
+            r="4"
+            fill="#EFB223"
+            opacity=".9"
+          />
+
+          <circle
+            cx="120"
+            cy="130"
+            r="4"
+            fill="#EFB223"
+            opacity=".9"
+          />
+
+          <circle
+            cx="145"
+            cy="130"
+            r="4"
+            fill="#EFB223"
+            opacity=".9"
+          />
+
+        </svg>
+
+      </div>
+
+
+      <!-- WHO MADE IT -->
+
+      <button
+        type="button"
+        class="link-btn maker-btn"
+        id="makerBtn"
+      >
+        Who made it?
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================================
+     MAKER POPUP
+     ================================ -->
+
+<div
+  class="maker-modal-backdrop"
+  id="makerModal"
+  aria-hidden="true"
+>
+
+  <div
+    class="maker-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="makerTitle"
+  >
+
+    <button
+      type="button"
+      class="modal-close"
+      id="makerCloseBtn"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+
+    <div
+      class="maker-message"
+      id="makerTitle"
+    >
+
+      Made with Bhalobash
+
+      <span class="maker-name">
+        ~Diablo
+      </span>
+
+      <span class="maker-role">
+        <em>Designer &amp; Developer</em>
+      </span>
+
+    </div>
+
+
+    <a
+      class="maker-instagram"
+      href="https://www.instagram.com/diablo_the_cannibal/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Visit @diablo_the_cannibal on Instagram"
+    >
+      Instagram
+    </a>
+
+  </div>
+
+</div>
+
+
+<!-- SMALL FOOTER -->
+
+<p class="credit">
+  made by @diablo
+</p>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
+
+<script>
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const to =
+    params.get('to');
+
+
+  const from =
+    params.get('from');
+
+
+  function showScreen(id){
+
+    document
+      .querySelectorAll('.screen')
+      .forEach(screen => {
+
+        screen.classList.remove(
+          'active'
+        );
+
+      });
+
+
+    const target =
+      document.getElementById(id);
+
+
+    if(target){
+
+      target.classList.add(
+        'active'
+      );
+
+    }
+
+  }
+
+
+  if(to && from){
+
+    showScreen(
+      'receiverScreen'
+    );
+
+
+    initReceiver(
+      to.trim(),
+      from.trim()
+    );
+
+  }else{
+
+    initHome();
+    initSetup();
+
+  }
+
+
+  /* ================================
+     HOME
+     ================================ */
+
+  function initHome(){
+
+    document
+      .getElementById('startBtn')
+      .addEventListener(
+        'click',
+        () => {
+
+          showScreen(
+            'setupScreen'
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById('howBtn')
+      .addEventListener(
+        'click',
+        () => {
+
+          showScreen(
+            'howScreen'
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById('howStartBtn')
+      .addEventListener(
+        'click',
+        () => {
+
+          showScreen(
+            'setupScreen'
+          );
+
+        }
+      );
+
+  }
+
+
+  /* ================================
+     SETUP
+     ================================ */
+
+  function initSetup(){
+
+    const toName =
+      document.getElementById(
+        'toName'
+      );
+
+
+    const fromName =
+      document.getElementById(
+        'fromName'
+      );
+
+
+    const doneBtn =
+      document.getElementById(
+        'doneBtn'
+      );
+
+
+    const errMsg =
+      document.getElementById(
+        'errMsg'
+      );
+
+
+    const resultBox =
+      document.getElementById(
+        'resultBox'
+      );
+
+
+    const linkOut =
+      document.getElementById(
+        'linkOut'
+      );
+
+
+    const copyBtn =
+      document.getElementById(
+        'copyBtn'
+      );
+
+
+    const backBtn =
+      document.getElementById(
+        'backBtn'
+      );
+
+
+    backBtn.addEventListener(
+      'click',
+      () => {
+
+        showScreen(
+          'homeScreen'
+        );
+
+      }
+    );
+
+
+    doneBtn.addEventListener(
+      'click',
+      () => {
+
+        const t =
+          toName.value.trim();
+
+
+        const f =
+          fromName.value.trim();
+
+
+        if(!t || !f){
+
+          errMsg.style.display =
+            'block';
+
+          return;
+
+        }
+
+
+        errMsg.style.display =
+          'none';
+
+
+        const url =
+          new URL(
+            window.location.href
+          );
+
+
+        url.search = '';
+
+
+        url.searchParams.set(
+          'to',
+          t
+        );
+
+
+        url.searchParams.set(
+          'from',
+          f
+        );
+
+
+        const link =
+          url.toString();
+
+
+        linkOut.value =
+          link;
+
+
+        resultBox.style.display =
+          'block';
+
+
+        const preview =
+          window.open(
+            link,
+            '_blank'
+          );
+
+
+        if(preview){
+
+          preview.focus();
+
+        }
+
+      }
+    );
+
+
+    copyBtn.addEventListener(
+      'click',
+      async () => {
+
+        try{
+
+          await navigator.clipboard.writeText(
+            linkOut.value
+          );
+
+        }catch(err){
+
+          linkOut.select();
+
+          document.execCommand(
+            'copy'
+          );
+
+        }
+
+
+        copyBtn.textContent =
+          'Copied';
+
+
+        setTimeout(
+          () => {
+
+            copyBtn.textContent =
+              'Copy';
+
+          },
+          1500
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ================================
+     RECEIVER
+     ================================ */
+
+  function initReceiver(
+    toName,
+    fromName
+  ){
+
+    const envelope =
+      document.getElementById(
+        'envelope'
+      );
+
+
+    const openBtn =
+      document.getElementById(
+        'openBtn'
+      );
+
+
+    const envelopeWrap =
+      document.getElementById(
+        'envelopeWrap'
+      );
+
+
+    const cardWrap =
+      document.getElementById(
+        'cardWrap'
+      );
+
+
+    const cursiveMsg =
+      document.getElementById(
+        'cursiveMsg'
+      );
+
+
+    const receiverScreenEl =
+      document.getElementById(
+        'receiverScreen'
+      );
+
+
+    cursiveMsg.innerHTML =
+
+      `Wishing you a very Happy Birthday, ${escapeHtml(toName)}.` +
+
+      `<span class="from">~${escapeHtml(fromName)} &lt;3</span>`;
+
+
+    let opened =
+      false;
+
+
+    function reveal(){
+
+      if(opened){
+
+        return;
+
+      }
+
+
+      opened = true;
+
+
+      envelope.classList.add(
+        'opened'
+      );
+
+
+      burst();
+
+
+      setTimeout(
+        () => {
+
+          envelopeWrap.style.display =
+            'none';
+
+
+          cardWrap.style.display =
+            'block';
+
+
+          requestAnimationFrame(
+            () => {
+
+              cardWrap.classList.add(
+                'show'
+              );
+
+            }
+          );
+
+
+          spawnBalloons();
+
+        },
+        820
+      );
+
+    }
+
+
+    openBtn.addEventListener(
+      'click',
+      reveal
+    );
+
+
+    envelope.addEventListener(
+      'click',
+      reveal
+    );
+
+
+    /* ================================
+       CONFETTI
+       ================================ */
+
+    function burst(){
+
+      const colors = [
+        '#E2794F',
+        '#6E9E80',
+        '#EFB223',
+        '#A98FC7'
+      ];
+
+
+      setTimeout(
+        () => {
+
+          confetti({
+
+            particleCount:180,
+
+            spread:90,
+
+            origin:{
+              y:.45
+            },
+
+            colors,
+
+            shapes:[
+              'circle',
+              'square'
+            ]
+
+          });
+
+        },
+        250
+      );
+
+
+      setTimeout(
+        () => {
+
+          confetti({
+
+            particleCount:160,
+
+            spread:115,
+
+            origin:{
+              y:.3
+            },
+
+            colors
+
+          });
+
+        },
+        500
+      );
+
+
+      setTimeout(
+        () => {
+
+          confetti({
+
+            particleCount:110,
+
+            angle:60,
+
+            spread:75,
+
+            origin:{
+              x:0
+            },
+
+            colors
+
+          });
+
+        },
+        650
+      );
+
+
+      setTimeout(
+        () => {
+
+          confetti({
+
+            particleCount:110,
+
+            angle:120,
+
+            spread:75,
+
+            origin:{
+              x:1
+            },
+
+            colors
+
+          });
+
+        },
+        650
+      );
+
+
+      setTimeout(
+        () => {
+
+          confetti({
+
+            particleCount:140,
+
+            spread:100,
+
+            startVelocity:35,
+
+            origin:{
+              x:.5,
+              y:.55
+            },
+
+            colors
+
+          });
+
+        },
+        900
+      );
+
+    }
+
+
+    /* ================================
+       BALLOONS
+       ================================ */
+
+    function spawnBalloons(){
+
+      const colors = [
+        '#E2794F',
+        '#6E9E80',
+        '#EFB223',
+        '#A98FC7'
+      ];
+
+
+      const width =
+        window.innerWidth;
+
+
+      let balloonCount;
+
+
+      if(width < 480){
+
+        balloonCount = 7;
+
+      }else if(width < 900){
+
+        balloonCount = 10;
+
+      }else{
+
+        balloonCount = 13;
+
+      }
+
+
+      for(
+        let i = 0;
+        i < balloonCount;
+        i++
+      ){
+
+        const b =
+          document.createElement(
+            'div'
+          );
+
+
+        b.className =
+          'balloon';
+
+
+        b.style.left =
+          (
+            Math.random() * 88 + 3
+          ) + '%';
+
+
+        b.style.background =
+          colors[
+            i % colors.length
+          ];
+
+
+        b.style.animationDuration =
+          (
+            7 + Math.random() * 4
+          ) + 's';
+
+
+        b.style.animationDelay =
+          (
+            Math.random() * 1.2
+          ) + 's';
+
+
+        receiverScreenEl.appendChild(
+          b
+        );
+
+
+        setTimeout(
+          () => b.remove(),
+          13000
+        );
+
+      }
+
+    }
+
+
+    initMakerModal();
+
+  }
+
+
+  /* ================================
+     MAKER MODAL
+     ================================ */
+
+  function initMakerModal(){
+
+    const makerBtn =
+      document.getElementById(
+        'makerBtn'
+      );
+
+
+    const makerModal =
+      document.getElementById(
+        'makerModal'
+      );
+
+
+    const makerCloseBtn =
+      document.getElementById(
+        'makerCloseBtn'
+      );
+
+
+    if(
+      !makerBtn ||
+      !makerModal ||
+      !makerCloseBtn
+    ){
+
+      return;
+
+    }
+
+
+    makerBtn.addEventListener(
+      'click',
+      () => {
+
+        makerModal.classList.add(
+          'show'
+        );
+
+
+        makerModal.setAttribute(
+          'aria-hidden',
+          'false'
+        );
+
+
+        document.body.style.overflow =
+          'hidden';
+
+
+        setTimeout(
+          () => {
+
+            makerCloseBtn.focus();
+
+          },
+          100
+        );
+
+      }
+    );
+
+
+    function closeMakerModal(){
+
+      makerModal.classList.remove(
+        'show'
+      );
+
+
+      makerModal.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+
+      document.body.style.overflow =
+        '';
+
+    }
+
+
+    makerCloseBtn.addEventListener(
+      'click',
+      closeMakerModal
+    );
+
+
+    makerModal.addEventListener(
+      'click',
+      event => {
+
+        if(
+          event.target ===
+          makerModal
+        ){
+
+          closeMakerModal();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      'keydown',
+      event => {
+
+        if(
+          event.key === 'Escape' &&
+          makerModal.classList.contains(
+            'show'
+          )
+        ){
+
+          closeMakerModal();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ================================
+     HTML ESCAPING
+     ================================ */
+
+  function escapeHtml(str){
+
+    const div =
+      document.createElement(
+        'div'
+      );
+
+
+    div.textContent =
+      str;
+
+
+    return div.innerHTML;
+
+  }
+
+</script>
+
+</body>
+</html>
