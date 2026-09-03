@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,7 @@
   content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
-<title>Make A Wish</title>
+<title>a birthday wish</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,18 +68,6 @@
 
   button{
     font:inherit;
-  }
-
-  .credit{
-    position:fixed;
-    left:clamp(1rem,3vw,1.4rem);
-    bottom:max(1rem,env(safe-area-inset-bottom));
-    font-size:10px;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--muted);
-    z-index:5;
-    pointer-events:none;
   }
 
   .screen{
@@ -1362,10 +1352,10 @@
       id="makerTitle"
     >
 
-      Made with Bhalobasha
+      Made with Bhalobasha ❤️
 
       <span class="maker-name">
-        ~Diablo
+        ~Dharitri Banik
       </span>
 
       <span class="maker-role">
@@ -1380,7 +1370,7 @@
       href="https://www.instagram.com/diablo_the_cannibal/"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Visit @diablo_the_cannibal on Instagram"
+      aria-label="Visit Dharitri Banik on Instagram"
     >
       Instagram
     </a>
@@ -1389,12 +1379,6 @@
 
 </div>
 
-
-<!-- SMALL FOOTER -->
-
-<p class="credit">
-  made by @diablo
-</p>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
@@ -1745,7 +1729,7 @@
 
       `Wishing you a very Happy Birthday, ${escapeHtml(toName)}.` +
 
-      `<span class="from">~${escapeHtml(fromName)} &lt;3</span>`;
+      `<span class="from">~${escapeHtml(fromName)}</span>`;
 
 
     let opened =
@@ -1770,6 +1754,33 @@
 
 
       burst();
+
+      // Extra confetti after the envelope opens.
+      setTimeout(
+        () => {
+          confetti({
+            particleCount:260,
+            spread:125,
+            startVelocity:42,
+            scalar:1.05,
+            origin:{
+              x:.5,
+              y:.52
+            },
+            colors:[
+              '#E2794F',
+              '#6E9E80',
+              '#EFB223',
+              '#A98FC7'
+            ],
+            shapes:[
+              'circle',
+              'square'
+            ]
+          });
+        },
+        1050
+      );
 
 
       setTimeout(
